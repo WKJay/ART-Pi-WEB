@@ -8555,6 +8555,11 @@ vue-ref@^2.0.0:
   resolved "https://registry.yarnpkg.com/vue-ref/-/vue-ref-2.0.0.tgz#483084d732abed11da796778a8266a3af0ea1a9c"
   integrity sha512-uKNKpFOVeWNqS2mrBZqnpLyXJo5Q+vnkex6JvpENvhXHFNBW/SJTP8vJywLuVT3DpxwXcF9N0dyIiZ4/NpTexQ==
 
+vue-router@^4.0.0-beta.7:
+  version "4.0.0-beta.7"
+  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-4.0.0-beta.7.tgz#afd8469c8f2aa86a2c785c08dfb954223f86581f"
+  integrity sha512-98CSf1ssIu0cZgdoBTqGWn9e17pueKOy4fzVyFyUhuJkjEwWNOsMMfKru6e0GTwZEtYOd6vhizvh7mkFGvdjVg==
+
 vue-style-loader@^4.1.0, vue-style-loader@^4.1.2:
   version "4.1.2"
   resolved "https://registry.npm.taobao.org/vue-style-loader/download/vue-style-loader-4.1.2.tgz#dedf349806f25ceb4e64f3ad7c0a44fba735fcf8"
