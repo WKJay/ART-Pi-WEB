@@ -4,22 +4,24 @@
  *
  */
 
-.ant-menu-dark {
+ /*    Overwrite antd style    */
+ .ant-menu-dark, .ant-menu-dark .ant-menu-sub {
     background-color: #343a40 ;
     box-shadow: 0 0.25rem 0.25rem rgba(0,0,0,.25);
   }
 
-  .ant-menu-sub {
-    background-color: #343a40;
-  }
 
   .ant-card{
     box-shadow: 0 1px 1px 0 rgba(60,75,100,.14), 0 2px 1px -1px rgba(60,75,100,.12), 0 1px 3px 0 rgba(60,75,100,.2);
   }
+ /*    Overwrite antd css    */
 
+
+
+/*    H7 style    */
   .h7-container{
     margin-left: 2%;
     margin-right: 2%;
     margin-top: 20px;
   }
-
+/*    H7 style    */
