@@ -7,14 +7,19 @@ import {
     Button,
     Menu,
     Col,
+    Row,
     Layout,
-    Card
+    Card,
+    Carousel
 } from 'ant-design-vue';
 import 'ant-design-vue/lib/button/style';
 import 'ant-design-vue/lib/menu/style';
 import 'ant-design-vue/lib/col/style';
 import 'ant-design-vue/lib/layout/style';
 import 'ant-design-vue/lib/card/style';
+import 'ant-design-vue/lib/row/style';
+import 'ant-design-vue/lib/carousel/style';
+
 
 import '@/assets/css/h7_web.css'
 
@@ -24,7 +29,10 @@ app.use(router);
 app.use(Button);
 app.use(Menu);
 app.use(Col);
+app.use(Row);
 app.use(Layout);
 app.use(Card);
+app.use(Carousel);
+
 
 app.mount('#app');
