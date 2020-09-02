@@ -74,6 +74,15 @@
 
     <a-row>
       <a-col :md="24">
+        <a-card  style="margin-bottom:15px">
+          <div id="memTrendChart" style="width: 600px;height:400px;">
+          </div>
+        </a-card>
+      </a-col>
+    </a-row>
+
+    <a-row>
+      <a-col :md="24">
         <a-card title="Current mods">
           <a-table :columns="modsColums" :data-source="mods">
             <template v-slot:active="{ text: active }">
@@ -152,11 +161,33 @@
             this.basicInfo[key] = data.data.payload[key];
           }
         }).catch(() => {});
+      },
+      showChart() {
+        var myChart = this.echarts.init(document.getElementById("memTrendChart"));
+        // 绘制图表
+        myChart.setOption({
+          title: {
+            text: 'ECharts 入门示例'
+          },
+          tooltip: {},
+          xAxis: {
+            data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+          },
+          yAxis: {},
+          series: [{
+            name: '销量',
+            type: 'bar',
+            data: [5, 20, 36, 10, 10, 20]
+          }]
+        });
       }
     },
     created() {
       this.getData();
       this.basicInfoTimer = window.setInterval(this.getData, 1200);
+    },
+    mounted() {
+      this.showChart();
     },
     beforeUnmount() {
       window.clearInterval(this.basicInfoTimer);

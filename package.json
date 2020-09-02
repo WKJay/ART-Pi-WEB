@@ -12,6 +12,7 @@
     "axios": "^0.20.0",
     "babel-plugin-import": "^1.13.0",
     "core-js": "^3.6.5",
+    "echarts": "^4.9.0",
     "less": "^3.12.2",
     "less-loader": "5.0.0",
     "schema-utils": "^2.7.0",

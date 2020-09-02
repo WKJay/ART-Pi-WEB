@@ -40,5 +40,6 @@ app.use(Tag);
 app.use(Progress);
 
 app.config.globalProperties.axios = require('axios').default;
+app.config.globalProperties.echarts = require('echarts');
 
 app.mount('#app');
