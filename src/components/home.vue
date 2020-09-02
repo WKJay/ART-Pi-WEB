@@ -148,7 +148,9 @@
           url: "/cgi-bin/basic_info",
           timeout: 1000
         }).then(data => {
-          console.log(data);
+          for (let key in data.data.payload) {
+            this.basicInfo[key] = data.data.payload[key];
+          }
         }).catch(() => {});
       }
     },
