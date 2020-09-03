@@ -1,4 +1,7 @@
 module.exports = {
+    configureWebpack: {
+        devtool: 'source-map'
+    },
     // 配置less
     css: {
         loaderOptions: {
@@ -8,8 +11,8 @@ module.exports = {
         }
     },
     devServer: {
-        proxy: "http://192.168.1.101:80"
+        //proxy: "http://192.168.1.101:80"
         //proxy: "http://10.2.5.138:80"
-        //proxy: "http://192.168.31.138:80"
+        proxy: "http://192.168.31.138:80"
     }
 }
