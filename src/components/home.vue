@@ -147,8 +147,9 @@ export default {
         slots: {
           customRender: 'active'
         }
-      },
-      ]
+      }],
+      memTrendArray: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      memTrendXArray: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'],
     }
   },
   methods: {
@@ -161,28 +162,45 @@ export default {
         for (let key in data.data.payload) {
           this.basicInfo[key] = data.data.payload[key];
         }
+
+        this.updateChart(this.ramUsage);
       }).catch(() => { });
     },
     showChart() {
-      var myChart = this.echarts.init(document.getElementById("memTrendChart"));
-      window.onresize = function () {
-
-        myChart.resize();
+      window.memTrendchart = this.echarts.init(document.getElementById("memTrendChart"));
+      window.onresize = () => {
+        window.memTrendchart.resize();
       }
+
       // 绘制图表
-      myChart.setOption({
+      window.memTrendchart.setOption({
         title: {
           text: 'Memory trend'
         },
         tooltip: {},
         xAxis: {
-          data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+          data: this.memTrendXArray
         },
         yAxis: {},
         series: [{
-          name: '销量',
-          type: 'bar',
-          data: [5, 20, 36, 10, 10, 20]
+          name: 'Mem',
+          type: 'line',
+          data: this.memTrendArray
+        }]
+      });
+    },
+    updateChart(data) {
+
+      this.memTrendArray.push(data);
+      this.memTrendArray.shift(1);
+    
+      window.memTrendChart.setOption({
+        xAxis: {
+          data: this.memTrendXArray
+        },
+        series: [{
+          name: "Mem",
+          data: this.memTrendArray
         }]
       });
     }
