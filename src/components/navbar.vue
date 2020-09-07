@@ -6,7 +6,7 @@
         </span>
       <a-menu-item>
         <HomeOutlined />Home</a-menu-item>
-      <a-menu-item>
+      <!-- <a-menu-item>
         <appstore-outlined />Applications </a-menu-item>
       <a-sub-menu>
         <template v-slot:title>
@@ -21,21 +21,21 @@
         <a-menu-item key="setting:2">
           Option 2
         </a-menu-item>
-      </a-sub-menu>
+      </a-sub-menu> -->
     </a-menu>
   </div>
 </template>
 <script>
   import {
     HomeOutlined,
-    AppstoreOutlined,
-    SettingOutlined
+    // AppstoreOutlined,
+    // SettingOutlined
   } from '@ant-design/icons-vue';
   export default {
     components: {
       HomeOutlined,
-      AppstoreOutlined,
-      SettingOutlined,
+      // AppstoreOutlined,
+      // SettingOutlined,
     },
     data() {
       return {

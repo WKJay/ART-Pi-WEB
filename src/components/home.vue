@@ -1,5 +1,6 @@
 <template>
   <div class="h7-container">
+
     <a-row :gutter="16">
       <a-col :md="6">
         <a-card class="h7-head-card" size="small" title="Board Control" :bordered="false">
@@ -81,7 +82,7 @@
       </a-col>
     </a-row>
 
-    <a-row>
+    <!-- <a-row>
       <a-col :md="24">
         <a-card title="Current mods">
           <a-table :columns="modsColums" :data-source="mods">
@@ -94,6 +95,45 @@
             </template>
           </a-table>
         </a-card>
+      </a-col>
+    </a-row> -->
+
+    <a-row>
+      <a-card class="h7-head-card-mini" :bordered="false">
+        <a-descriptions title="Basic information">
+          <a-descriptions-item label="Firmware version">
+            {{basicInfo.id12}}
+          </a-descriptions-item>
+          <a-descriptions-item label="Web version">
+            {{basicInfo.id13}}
+          </a-descriptions-item>
+          <a-descriptions-item label="Operation directory">
+            {{basicInfo.id5}}
+          </a-descriptions-item>
+          <a-descriptions-item label="Server Date">
+            {{basicInfo.id4}}
+          </a-descriptions-item>
+        </a-descriptions>
+      </a-card>
+
+    </a-row>
+
+
+    <a-row :gutter="16">
+      <a-col :md="8">
+        <a-button size="large" block href="https://www.rt-thread.org/">
+          RT-Thread 官方网站
+        </a-button>
+      </a-col>
+      <a-col :md="8">
+        <a-button size="large" block href="https://www.rt-thread.org/document/site/">
+          RT-Thread 文档中心
+        </a-button>
+      </a-col>
+      <a-col :md="8">
+        <a-button size="large" block href="https://club.rt-thread.org/">
+          RT-Thread开源社区
+        </a-button>
       </a-col>
     </a-row>
   </div>
@@ -116,7 +156,9 @@
           id8: "0",
           id9: "0",
           id10: "0",
-          id11: "0"
+          id11: "0",
+          id12: "v1.0.0", //firmware version
+          id13: "v0.0.1", //web version
         },
         mods: [{
           key: "1",
@@ -247,14 +289,8 @@
   /* For demo */
   .ant-carousel ::v-deep(.slick-slide) {
     text-align: center;
-    height: 400px;
-    line-height: 160px;
+    height: 160px;
     background: #364d79;
     overflow: hidden;
-  }
-
-  .ant-carousel ::v-deep(.slick-slide h3) {
-    color: #fff;
-    margin-top: 60px;
   }
 </style>
