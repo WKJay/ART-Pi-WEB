@@ -30,6 +30,7 @@ import 'ant-design-vue/lib/descriptions/style';
 
 import '@/assets/css/h7_web.css'
 
+const WEB_VERSION = "V0.1.0"
 const app = createApp(App);
 app.use(router);
 
@@ -47,5 +48,6 @@ app.use(Descriptions);
 
 app.config.globalProperties.axios = require('axios').default;
 app.config.globalProperties.echarts = require('echarts');
+app.config.globalProperties.webVer = WEB_VERSION;
 
 app.mount('#app');
