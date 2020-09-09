@@ -124,8 +124,17 @@
           <a-descriptions-item label="网页版本">
             {{webVer}}
           </a-descriptions-item>
+          <a-descriptions-item label="序列号">
+            {{basicInfo.id13}}
+          </a-descriptions-item>
           <a-descriptions-item label="服务器时间">
             {{basicInfo.id4}}
+          </a-descriptions-item>
+          <a-descriptions-item label="服务器已运行">
+            {{basicInfo.id18}}秒
+          </a-descriptions-item>
+          <a-descriptions-item label="网络状态">
+            {{basicInfo.id17?"已联网":"未联网"}}
           </a-descriptions-item>
         </a-descriptions>
       </a-card>
