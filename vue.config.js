@@ -22,7 +22,7 @@ module.exports = {
     },
     devServer: {
         //proxy: "http://192.168.1.101:80"
-        proxy: "http://10.2.5.184:80"
-        //proxy: "http://192.168.31.138:80"
+        //proxy: "http://10.2.5.184:80"
+        proxy: "http://192.168.31.138:80"
     }
 }

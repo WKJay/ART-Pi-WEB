@@ -7,11 +7,12 @@
           <a-row>
             <div style="margin-bottom:12px">
               <a-tag :color="bLedStat?'blue':''">
-                BLUE LED
+                蓝灯
                 <BulbOutlined />
               </a-tag>
-              <a-button :loading="control.bLedReq" type="default" size="small" style="float:right" @click="boardControl('dev0',!basicInfo.id14)">
-                TURN {{basicInfo.id14?"OFF":"ON"}}
+              <a-button :loading="control.bLedReq" type="default" size="small" style="float:right"
+                @click="boardControl('dev0',!basicInfo.id14)">
+                {{basicInfo.id14?"关闭":"打开"}}
               </a-button>
             </div>
           </a-row>
@@ -19,11 +20,12 @@
           <a-row>
             <div>
               <a-tag :color="rLedStat?'red':''">
-                RED&nbsp; LED
+                红灯
                 <BulbOutlined />
               </a-tag>
-              <a-button :loading="control.rLedReq" type="default" size="small" style="float:right" @click="boardControl('dev1',!basicInfo.id15)">
-                TURN {{basicInfo.id15?"OFF":"ON"}}
+              <a-button :loading="control.rLedReq" type="default" size="small" style="float:right"
+                @click="boardControl('dev1',!basicInfo.id15)">
+                {{basicInfo.id15?"关闭":"打开"}}
               </a-button>
             </div>
           </a-row>
@@ -40,14 +42,14 @@
       </a-col>
 
       <a-col :md="6">
-        <a-card class="h7-head-card" size="small" title="RAM" :bordered="false">
+        <a-card class="h7-head-card" size="small" title="内存" :bordered="false">
           <p>
-            Total memory
-            <span>{{basicInfo.id0}}</span>
+            总容量
+            <span>{{ramTotalH}}</span>
           </p>
           <p>
-            Used memory
-            <span>{{basicInfo.id1}}</span>
+            已使用
+            <span>{{ramUsedH}}</span>
           </p>
           <p>
             <a-progress :percent="ramUsage" />
@@ -58,12 +60,12 @@
       <a-col :md="6">
         <a-card class="h7-head-card" size="small" title="Norflash" :bordered="false">
           <p>
-            Total memory
-            <span>{{basicInfo.id6}}</span>
+            总容量
+            <span>{{norTotalH}}</span>
           </p>
           <p>
-            Used memory
-            <span>{{basicInfo.id7}}</span>
+            已使用
+            <span>{{norUsedH}}</span>
           </p>
           <p>
             <a-progress :percent="norflashUsage" />
@@ -74,12 +76,12 @@
       <a-col :md="6">
         <a-card class="h7-head-card" size="small" title="SD" :bordered="false">
           <p>
-            Total memory
-            <span>{{basicInfo.id8}}</span>
+            总容量
+            <span>{{sdTotalH}}</span>
           </p>
           <p>
-            Used memory
-            <span>{{basicInfo.id9}}</span>
+            已使用
+            <span>{{sdUsedH}}</span>
           </p>
           <p>
             <a-progress :percent="sdUsage" />
@@ -115,14 +117,14 @@
 
     <a-row>
       <a-card class="h7-head-card-mini" :bordered="false">
-        <a-descriptions title="Basic information">
-          <a-descriptions-item label="Firmware version">
+        <a-descriptions title="基础信息">
+          <a-descriptions-item label="固件版本">
             {{basicInfo.id12}}
           </a-descriptions-item>
-          <a-descriptions-item label="Web version">
+          <a-descriptions-item label="网页版本">
             {{webVer}}
           </a-descriptions-item>
-          <a-descriptions-item label="Server Date">
+          <a-descriptions-item label="服务器时间">
             {{basicInfo.id4}}
           </a-descriptions-item>
         </a-descriptions>
@@ -143,7 +145,7 @@
       </a-col>
       <a-col :md="8">
         <a-button size="large" block href="https://club.rt-thread.org/">
-          RT-Thread开源社区
+          RT-Thread 开源社区
         </a-button>
       </a-col>
     </a-row>
@@ -151,216 +153,265 @@
 </template>
 
 <script>
-import { BulbOutlined } from '@ant-design/icons-vue';
-export default {
-  components: {
-    BulbOutlined,
-  },
-  data() {
-    return {
-      basicInfoTimer: null,
-      control: {
-        bLedReq: false,//蓝灯请求状态
-        rLedReq: false,//红灯请求状态
-      },
-      basicInfo: {
-        id0: "33968596",
-        id1: "61556",
-        id2: "64660",
-        id3: "8",
-        id4: "2000-01-01 10:41:55", //server time
-        id5: "norflash",
-        id6: "15728640",
-        id7: "32768",
-        id8: "0",
-        id9: "0",
-        id10: "0",
-        id11: "0",
-        id12: "v1.0.0", //firmware version
-        id13: " ",      //RESERVE
-        id14: false,  //BLUE LED
-        id15: false,   //RED LED
-        id16: false,   //BEEP
-      },
-      mods: [{
-        key: "1",
-        name: 'FTP',
-        author: 'mlw',
-        version: 'v1.0.0',
-        active: true,
-      }],
-      modsColums: [{
-        title: 'Name',
-        dataIndex: 'name',
-        key: 'name'
-      },
-      {
-        title: 'Author',
-        dataIndex: 'author',
-        key: 'author'
-      },
-      {
-        title: 'Version',
-        dataIndex: 'version',
-        key: 'version'
-      },
-      {
-        title: 'Status',
-        dataIndex: 'active',
-        key: 'active',
-        slots: {
-          customRender: 'active'
-        }
-      }
-      ],
-      memTrendArray: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      memTrendXArray: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17',
-        '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'
-      ],
-    }
-  },
-  methods: {
-    getData() {
-      this.axios({
-        method: "get",
-        url: "/cgi-bin/basic_info",
-        timeout: 1000
-      }).then(data => {
-        for (let key in data.data.payload) {
-          this.basicInfo[key] = data.data.payload[key];
-        }
-
-        this.updateChart(this.basicInfo.id1);
-      }).catch(() => { });
+  import {
+    BulbOutlined
+  } from '@ant-design/icons-vue';
+  export default {
+    components: {
+      BulbOutlined,
     },
-    showChart() {
-      window.memTrendchart = this.echarts.init(document.getElementById("memTrendChart"));
-      window.onresize = () => {
-        window.memTrendchart.resize();
-      }
-
-      // 绘制图表
-      window.memTrendchart.setOption({
-        title: {
-          text: 'Memory trend'
+    data() {
+      return {
+        basicInfoTimer: null,
+        control: {
+          bLedReq: false, //蓝灯请求状态
+          rLedReq: false, //红灯请求状态
         },
-        tooltip: {},
-        xAxis: {
-          data: this.memTrendXArray
+        basicInfo: {
+          id0: "33968596", //total ram
+          id1: "61556", //used ram
+          id2: "64660", //max used ram
+          id3: "8", //time zone
+          id4: "2000-01-01 10:41:55", //server time
+          id5: "norflash", //operation dir
+          id6: "15728640", //norflash total
+          id7: "32768", //norflash used
+          id8: "0", //sd total
+          id9: "0", //sd used
+          id10: "0", //usb total 
+          id11: "0", //usb used
+          id12: "v1.0.0", //firmware version
+          id13: " ", //RESERVE
+          id14: false, //BLUE LED
+          id15: false, //RED LED
+          id16: false, //BEEP
         },
-        yAxis: {},
-        series: [{
-          symbol: "none",
-          name: 'Mem',
-          type: 'line',
-          data: this.memTrendArray
-        }]
-      });
-    },
-    updateChart(data) {
-      this.memTrendArray.push(data);
-      this.memTrendArray.shift();
-      window.memTrendchart.setOption({
-        series: [{
-          name: 'Mem',
-          data: this.memTrendArray
-        }]
-      });
-    },
-    boardControl(id, code) {
-      let params = {
-        id,
-        code
+        mods: [{
+          key: "1",
+          name: 'FTP',
+          author: 'mlw',
+          version: 'v1.0.0',
+          active: true,
+        }],
+        modsColums: [{
+            title: 'Name',
+            dataIndex: 'name',
+            key: 'name'
+          },
+          {
+            title: 'Author',
+            dataIndex: 'author',
+            key: 'author'
+          },
+          {
+            title: 'Version',
+            dataIndex: 'version',
+            key: 'version'
+          },
+          {
+            title: 'Status',
+            dataIndex: 'active',
+            key: 'active',
+            slots: {
+              customRender: 'active'
+            }
+          }
+        ],
+        memTrendArray: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        memTrendXArray: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',
+          '', '', '', '', '', ''
+        ],
       }
-
-      if (id == "dev0") {
-        this.control.bLedReq = true;
-      } else if (id == "dev1") {
-        this.control.rLedReq = true;
-      }
-
-      this.axios({
-        method: "post",
-        url: "/cgi-bin/board_control",
-        timeout: 1500,
-        data: params,
-        responseType: "json"
-      }).then(data => {
-        if (id == "dev0") {
-          this.control.bLedReq = false;
-        } else if (id == "dev1") {
-          this.control.rLedReq = false;
+    },
+    methods: {
+      getData() {
+        this.axios({
+          method: "get",
+          url: "/cgi-bin/basic_info",
+          timeout: 1000
+        }).then(data => {
+          for (let key in data.data.payload) {
+            this.basicInfo[key] = data.data.payload[key];
+          }
+          this.updateChart(this.ramUsage);
+        }).catch(() => {});
+      },
+      showChart() {
+        window.memTrendchart = this.echarts.init(document.getElementById("memTrendChart"));
+        window.onresize = () => {
+          window.memTrendchart.resize();
         }
-        if (data.data.code == 0) {
-          this.getData();
+
+        // 绘制图表
+        window.memTrendchart.setOption({
+          title: {
+            text: '内存走势'
+          },
+          tooltip: {},
+          xAxis: {
+            data: this.memTrendXArray
+          },
+          yAxis: {
+            axisLabel: {
+              formatter: '{value} %'
+            }
+          },
+          series: [{
+            symbol: "none",
+            name: 'Mem',
+            type: 'line',
+            smooth: true,
+            data: this.memTrendArray
+          }]
+        });
+      },
+      timeStrFormat(val) {
+        if (val < 10) {
+          return `0${val}`;
         } else {
-          //handle error
+          return `${val}`;
         }
-      }).catch(() => {
-        if (id == "dev0") {
-          this.control.bLedReq = false;
-        } else if (id == "dev1") {
-          this.control.rLedReq = false;
+      },
+      updateChart(data) {
+        let time = new Date();
+        let timeStr = `${this.timeStrFormat(time.getMinutes())}:${this.timeStrFormat(time.getSeconds())}`;
+        this.memTrendXArray.push(timeStr);
+        this.memTrendXArray.shift();
+        this.memTrendArray.push(data);
+        this.memTrendArray.shift();
+        window.memTrendchart.setOption({
+          xAxis: {
+            data: this.memTrendXArray
+          },
+          series: [{
+            name: 'Mem',
+            data: this.memTrendArray
+          }]
+        });
+      },
+      boardControl(id, code) {
+        let params = {
+          id,
+          code
         }
-      });
-    }
-  },
-  created() {
-    this.getData();
-    this.basicInfoTimer = window.setInterval(this.getData, 1200);
 
-  },
-  mounted() {
-    this.showChart();
-  },
-  beforeUnmount() {
-    window.clearInterval(this.basicInfoTimer);
-  },
-  computed: {
-    ramUsage: function () {
-      if (this.basicInfo.id0 == 0) {
-        return 0;
-      } else {
-        let percent = parseFloat((this.basicInfo.id1 / this.basicInfo.id0 * 100).toFixed(1));
-        return percent != 100 ? percent : 99.9;
+        if (id == "dev0") {
+          this.control.bLedReq = true;
+        } else if (id == "dev1") {
+          this.control.rLedReq = true;
+        }
+
+        this.axios({
+          method: "post",
+          url: "/cgi-bin/board_control",
+          timeout: 1500,
+          data: params,
+          responseType: "json"
+        }).then(data => {
+          if (id == "dev0") {
+            this.control.bLedReq = false;
+          } else if (id == "dev1") {
+            this.control.rLedReq = false;
+          }
+          if (data.data.code == 0) {
+            this.getData();
+          } else {
+            //handle error
+          }
+        }).catch(() => {
+          if (id == "dev0") {
+            this.control.bLedReq = false;
+          } else if (id == "dev1") {
+            this.control.rLedReq = false;
+          }
+        });
+      },
+      originDataToHuman(val) {
+        if (val > 1024 * 1024 * 1024) {
+          return (val / 1024 / 1024 / 1024).toFixed(2) + "G";
+        } else if (val > 1024 * 1024) {
+          return (val / 1024 / 1024).toFixed(2) + "M";
+        } else if (val > 1024) {
+          return (val / 1024).toFixed(2) + "K";
+        } else {
+          return (val) + "B";
+        }
       }
     },
-    norflashUsage: function () {
-      if (this.basicInfo.id6 == 0) {
-        return 0;
-      } else {
-        let percent = parseFloat((this.basicInfo.id7 / this.basicInfo.id6 * 100).toFixed(1));
-        return percent != 100 ? percent : 99.9;
+    created() {
+      this.getData();
+      this.basicInfoTimer = window.setInterval(this.getData, 1200);
+
+    },
+    mounted() {
+      this.showChart();
+    },
+    beforeUnmount() {
+      window.clearInterval(this.basicInfoTimer);
+    },
+    computed: {
+      ramTotalH: function () {
+        return this.originDataToHuman(this.basicInfo.id0);
+      },
+      ramUsedH: function () {
+        return this.originDataToHuman(this.basicInfo.id1);
+      },
+      norTotalH: function () {
+        return this.originDataToHuman(this.basicInfo.id6);
+      },
+      norUsedH: function () {
+        return this.originDataToHuman(this.basicInfo.id7);
+      },
+      sdTotalH: function () {
+        return this.originDataToHuman(this.basicInfo.id8);
+      },
+      sdUsedH: function () {
+        return this.originDataToHuman(this.basicInfo.id9);
+      },
+      ramUsage: function () {
+        if (this.basicInfo.id0 == 0) {
+          return 0;
+        } else {
+          let percent = parseFloat((this.basicInfo.id1 / this.basicInfo.id0 * 100).toFixed(1));
+          return percent != 100 ? percent : 99.9;
+        }
+      },
+      norflashUsage: function () {
+        if (this.basicInfo.id6 == 0) {
+          return 0;
+        } else {
+          let percent = parseFloat((this.basicInfo.id7 / this.basicInfo.id6 * 100).toFixed(1));
+          return percent != 100 ? percent : 99.9;
+        }
+      },
+      sdUsage: function () {
+        if (this.basicInfo.id8 == 0) {
+          return 0;
+        } else {
+          let percent = parseFloat((this.basicInfo.id9 / this.basicInfo.id8 * 100).toFixed(1));
+          return percent != 100 ? percent : 99.9;
+        }
+      },
+      bLedStat: function () {
+        return this.basicInfo.id14;
+      },
+      rLedStat: function () {
+        return this.basicInfo.id15;
       }
-    },
-    sdUsage: function () {
-      if (this.basicInfo.id8 == 0) {
-        return 0;
-      } else {
-        let percent = parseFloat((this.basicInfo.id9 / this.basicInfo.id8 * 100).toFixed(1));
-        return percent != 100 ? percent : 99.9;
-      }
-    },
-    bLedStat: function () {
-      return this.basicInfo.id14;
-    },
-    rLedStat: function () {
-      return this.basicInfo.id15;
     }
   }
-}
 </script>
 
 <style scoped>
-/* For demo */
-.ant-carousel ::v-deep(.slick-slide) {
-  text-align: center;
-  height: 160px;
-  background: #364d79;
-  overflow: hidden;
-}
+  /* For demo */
+  .ant-carousel ::v-deep(.slick-slide) {
+    text-align: center;
+    height: 160px;
+    background: #364d79;
+    overflow: hidden;
+  }
 
-.ant-tag {
-  font-size: 16px;
-}
+  .ant-tag {
+    font-size: 16px;
+  }
 </style>

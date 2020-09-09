@@ -2,7 +2,7 @@
   <div>
     <a-menu v-model:selectedKeys="current" mode="horizontal" theme="dark">
         <span style="margin: 0 10px 0 10px;">
-            H7 WEB PREVIEW
+            ART PI
         </span>
       <a-menu-item>
         <HomeOutlined />Home</a-menu-item>
