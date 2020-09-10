@@ -69,14 +69,14 @@ response:
 
 #### 3. Current active mods
 
-request url: `/cgi-bin/current_mods`
+request url: `/cgi-bin/plugins_info`
 response:
 
 ```json
 //success
 {
     code:0
-    mods:[
+    plugins:[
         {
             name:"xxx",
             author:"xxx",

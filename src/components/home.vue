@@ -3,41 +3,19 @@
 
     <a-row :gutter="16">
       <a-col :md="6">
-        <a-card class="h7-head-card" size="small" title="Board Control" :bordered="false">
-          <a-row>
-            <div style="margin-bottom:12px">
-              <a-tag :color="bLedStat?'blue':''">
-                蓝灯
-                <BulbOutlined />
-              </a-tag>
-              <a-button :loading="control.bLedReq" type="default" size="small" style="float:right"
-                @click="boardControl('dev0',!basicInfo.id14)">
-                {{basicInfo.id14?"关闭":"打开"}}
-              </a-button>
-            </div>
-          </a-row>
-
-          <a-row>
-            <div>
-              <a-tag :color="rLedStat?'red':''">
-                红灯
-                <BulbOutlined />
-              </a-tag>
-              <a-button :loading="control.rLedReq" type="default" size="small" style="float:right"
-                @click="boardControl('dev1',!basicInfo.id15)">
-                {{basicInfo.id15?"关闭":"打开"}}
-              </a-button>
-            </div>
-          </a-row>
-
-          <a-row>
-            <a-col :xs="12">
-
-            </a-col>
-            <a-col :xs="12">
-
-            </a-col>
-          </a-row>
+        <a-card class="h7-head-card" size="small" title="服务器信息" :bordered="false">
+          <p>
+            服务器已运行
+            <span>{{serverRunTime}}</span>
+          </p>
+          <p>
+            网络状态
+            <span>{{basicInfo.id17?"已联网":"未联网"}}</span>
+          </p>
+          <p>
+            服务器时间
+            <span>{{basicInfo.id4}}</span>
+          </p>
         </a-card>
       </a-col>
 
@@ -99,22 +77,6 @@
       </a-col>
     </a-row>
 
-    <!-- <a-row>
-      <a-col :md="24">
-        <a-card title="Current mods">
-          <a-table :columns="modsColums" :data-source="mods">
-            <template v-slot:active="{ text: active }">
-              <span>
-                <a-tag :color="active  ? 'green' :  'volcano'">
-                  {{ active?"active":"disabled" }}
-                </a-tag>
-              </span>
-            </template>
-          </a-table>
-        </a-card>
-      </a-col>
-    </a-row> -->
-
     <a-row>
       <a-card class="h7-head-card-mini" :bordered="false">
         <a-descriptions title="基础信息">
@@ -126,15 +88,6 @@
           </a-descriptions-item>
           <a-descriptions-item label="序列号">
             {{basicInfo.id13}}
-          </a-descriptions-item>
-          <a-descriptions-item label="服务器时间">
-            {{basicInfo.id4}}
-          </a-descriptions-item>
-          <a-descriptions-item label="服务器已运行">
-            {{basicInfo.id18}}秒
-          </a-descriptions-item>
-          <a-descriptions-item label="网络状态">
-            {{basicInfo.id17?"已联网":"未联网"}}
           </a-descriptions-item>
         </a-descriptions>
       </a-card>
@@ -162,12 +115,9 @@
 </template>
 
 <script>
-  import {
-    BulbOutlined
-  } from '@ant-design/icons-vue';
   export default {
     components: {
-      BulbOutlined,
+
     },
     data() {
       return {
@@ -195,37 +145,6 @@
           id15: false, //RED LED
           id16: false, //BEEP
         },
-        mods: [{
-          key: "1",
-          name: 'FTP',
-          author: 'mlw',
-          version: 'v1.0.0',
-          active: true,
-        }],
-        modsColums: [{
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name'
-          },
-          {
-            title: 'Author',
-            dataIndex: 'author',
-            key: 'author'
-          },
-          {
-            title: 'Version',
-            dataIndex: 'version',
-            key: 'version'
-          },
-          {
-            title: 'Status',
-            dataIndex: 'active',
-            key: 'active',
-            slots: {
-              customRender: 'active'
-            }
-          }
-        ],
         memTrendArray: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         memTrendXArray: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',
           '', '', '', '', '', ''
@@ -256,14 +175,21 @@
           title: {
             text: '内存走势'
           },
+          grid: {
+            left: '1%',
+            right: '1%',
+            bottom: '10%',
+            containLabel: true,
+          },
           tooltip: {},
           xAxis: {
             data: this.memTrendXArray
           },
           yAxis: {
             axisLabel: {
-              formatter: '{value} %'
-            }
+              formatter: '{value}%'
+            },
+
           },
           series: [{
             symbol: "none",
@@ -349,7 +275,7 @@
     },
     created() {
       this.getData();
-      this.basicInfoTimer = window.setInterval(this.getData, 1200);
+      this.basicInfoTimer = window.setInterval(this.getData, 1000);
 
     },
     mounted() {
@@ -359,6 +285,28 @@
       window.clearInterval(this.basicInfoTimer);
     },
     computed: {
+      serverRunTime: function () {
+        let days = 0,
+          hours = 0,
+          minutes = 0,
+          seconds = 0;
+
+        let run_time = this.basicInfo.id18;
+        seconds = run_time;
+        if (seconds > 59) {
+          minutes = seconds / 60;
+          seconds = seconds % 60;
+          if (minutes > 59) {
+            hours = minutes / 60;
+            minutes = minutes % 60;
+            if (hours > 23) {
+              days = hours / 24;
+              hours = hours % 24;
+            }
+          }
+        }
+        return `${parseInt(days)}天 ${parseInt(hours)}时 ${parseInt(minutes)}分 ${parseInt(seconds)}秒`;
+      },
       ramTotalH: function () {
         return this.originDataToHuman(this.basicInfo.id0);
       },

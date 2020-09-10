@@ -1,14 +1,18 @@
 <template>
   <div>
-    <a-menu v-model:selectedKeys="current" mode="horizontal" theme="dark">
-        <span style="margin: 0 10px 0 10px;">
-            ART PI
-        </span>
-      <a-menu-item>
-        <HomeOutlined />Home</a-menu-item>
-      <!-- <a-menu-item>
-        <appstore-outlined />Applications </a-menu-item>
-      <a-sub-menu>
+    <a-menu v-model:selectedKeys="current" mode="horizontal" theme="dark" @click="menuClick">
+      <span style="margin: 0 10px 0 10px;">
+        RT-Thread &nbsp;&nbsp; ART PI &nbsp;&nbsp;&nbsp;
+      </span>
+      <a-menu-item key="/home">
+        <HomeOutlined />
+        主页
+      </a-menu-item>
+      <a-menu-item key="/plugins">
+        <appstore-outlined />
+        插件
+      </a-menu-item>
+      <!-- <a-sub-menu>
         <template v-slot:title>
           <span class="submenu-title-wrapper">
             <setting-outlined />
@@ -28,13 +32,13 @@
 <script>
   import {
     HomeOutlined,
-    // AppstoreOutlined,
+    AppstoreOutlined,
     // SettingOutlined
   } from '@ant-design/icons-vue';
   export default {
     components: {
       HomeOutlined,
-      // AppstoreOutlined,
+      AppstoreOutlined,
       // SettingOutlined,
     },
     data() {
@@ -42,9 +46,14 @@
         current: ['mail'],
       };
     },
+    methods: {
+      menuClick(data) {
+        this.$router.push(data.key);
+      }
+    }
   };
 </script>
 
-<style >
-  
+<style>
+
 </style>
