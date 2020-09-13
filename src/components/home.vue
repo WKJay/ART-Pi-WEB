@@ -124,8 +124,14 @@
           <a-descriptions-item label="网页版本">
             {{webVer}}
           </a-descriptions-item>
+          <a-descriptions-item label="网络状态">
+            {{basicInfo.id17?"已联网":"未联网"}}
+          </a-descriptions-item>
           <a-descriptions-item label="服务器时间">
             {{basicInfo.id4}}
+          </a-descriptions-item>
+          <a-descriptions-item label="运行时间">
+            {{serverRunTime}}
           </a-descriptions-item>
         </a-descriptions>
       </a-card>
@@ -185,6 +191,8 @@
           id14: false, //BLUE LED
           id15: false, //RED LED
           id16: false, //BEEP
+          id17: false, //Internet
+          id18: 0, //running time
         },
         mods: [{
           key: "1",
@@ -397,7 +405,28 @@
       },
       rLedStat: function () {
         return this.basicInfo.id15;
-      }
+      },
+      serverRunTime: function () {
+        let days = 0,
+          hours = 0,
+          minutes = 0,
+          seconds = 0;
+        let run_time = this.basicInfo.id18;
+        seconds = run_time;
+        if (seconds > 59) {
+          minutes = seconds / 60;
+          seconds = seconds % 60;
+          if (minutes > 59) {
+            hours = minutes / 60;
+            minutes = minutes % 60;
+            if (hours > 23) {
+              days = hours / 24;
+              hours = hours % 24;
+            }
+          }
+        }
+        return `${parseInt(days)}天 ${parseInt(hours)}时 ${parseInt(minutes)}分 ${parseInt(seconds)}秒`;
+      },
     }
   }
 </script>
