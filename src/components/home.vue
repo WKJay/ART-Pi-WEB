@@ -283,6 +283,8 @@
     },
     beforeUnmount() {
       window.clearInterval(this.basicInfoTimer);
+      window.memTrendchart.dispose();
+      window.memTrendchart = null;
     },
     computed: {
       serverRunTime: function () {
