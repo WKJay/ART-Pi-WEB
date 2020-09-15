@@ -255,6 +255,12 @@
           title: {
             text: '内存走势'
           },
+          grid: {
+            left: '1%',
+            right: '1%',
+            bottom: '10%',
+            containLabel: true,
+          },
           tooltip: {},
           xAxis: {
             data: this.memTrendXArray
