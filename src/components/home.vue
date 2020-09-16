@@ -190,7 +190,7 @@
           id13: " ", //RESERVE
           id14: false, //BLUE LED
           id15: false, //RED LED
-          id16: false, //BEEP
+          id16: 0, //WIFI RSSI
           id17: false, //Internet
           id18: 0, //running time
         },
@@ -225,10 +225,8 @@
             }
           }
         ],
-        memTrendArray: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        memTrendXArray: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',
-          '', '', '', '', '', ''
-        ],
+        memTrendArray: [],
+        memTrendXArray: [],
       }
     },
     methods: {
@@ -241,7 +239,7 @@
           for (let key in data.data.payload) {
             this.basicInfo[key] = data.data.payload[key];
           }
-          this.updateChart(this.ramUsage);
+          this.updateChart(this.basicInfo.id16);
         }).catch(() => {});
       },
       showChart() {
@@ -253,7 +251,7 @@
         // 绘制图表
         window.memTrendchart.setOption({
           title: {
-            text: '内存走势'
+            text: 'WIFI RSSI'
           },
           grid: {
             left: '1%',
@@ -267,7 +265,7 @@
           },
           yAxis: {
             axisLabel: {
-              formatter: '{value} %'
+              formatter: '{value}'
             }
           },
           series: [{
@@ -290,9 +288,11 @@
         let time = new Date();
         let timeStr = `${this.timeStrFormat(time.getMinutes())}:${this.timeStrFormat(time.getSeconds())}`;
         this.memTrendXArray.push(timeStr);
-        this.memTrendXArray.shift();
+        if (this.memTrendXArray.length > 30)
+          this.memTrendXArray.shift();
         this.memTrendArray.push(data);
-        this.memTrendArray.shift();
+        if (this.memTrendArray.length > 30)
+          this.memTrendArray.shift();
         window.memTrendchart.setOption({
           xAxis: {
             data: this.memTrendXArray
