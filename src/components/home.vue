@@ -90,10 +90,16 @@
       </a-col>
     </a-row>
 
-    <a-row>
-      <a-col :md="24">
+    <a-row :gutter="16">
+      <a-col :lg="12">
         <a-card style="margin-bottom:15px">
           <div id="memTrendChart" style="width:100%;height:300px;">
+          </div>
+        </a-card>
+      </a-col>
+      <a-col :lg="12">
+        <a-card style="margin-bottom:15px">
+          <div id="rssiChart" style="width:100%;height:300px;">
           </div>
         </a-card>
       </a-col>
@@ -159,6 +165,7 @@
 </template>
 
 <script>
+  const MAX_HOME_CHART_SAMPLE = 50;
   import {
     BulbOutlined
   } from '@ant-design/icons-vue';
@@ -225,8 +232,14 @@
             }
           }
         ],
-        memTrendArray: [],
-        memTrendXArray: [],
+        rssiChartData: {
+          yArray: [],
+          xArray: []
+        },
+        memTrendChartData: {
+          yArray: [],
+          xArray: []
+        }
       }
     },
     methods: {
@@ -239,17 +252,20 @@
           for (let key in data.data.payload) {
             this.basicInfo[key] = data.data.payload[key];
           }
-          this.updateChart(this.basicInfo.id16);
+          this.updateRssiChart(this.basicInfo.id16);
+          this.updateMemTrendChart(this.ramUsage);
         }).catch(() => {});
       },
       showChart() {
-        window.memTrendchart = this.echarts.init(document.getElementById("memTrendChart"));
+        window.rssiChart = this.echarts.init(document.getElementById("rssiChart"));
+        window.memTrendChart = this.echarts.init(document.getElementById("memTrendChart"));
         window.onresize = () => {
-          window.memTrendchart.resize();
+          window.rssiChart.resize();
+          window.memTrendChart.resize();
         }
 
         // 绘制图表
-        window.memTrendchart.setOption({
+        window.rssiChart.setOption({
           title: {
             text: 'WIFI RSSI'
           },
@@ -261,7 +277,8 @@
           },
           tooltip: {},
           xAxis: {
-            data: this.memTrendXArray
+            data: this.rssiChartData.xArray,
+            show:false
           },
           yAxis: {
             axisLabel: {
@@ -270,10 +287,43 @@
           },
           series: [{
             symbol: "none",
+            name: 'Rssi',
+            type: 'line',
+            smooth: true,
+            data: this.rssiChartData.yArray
+          }]
+        });
+
+        window.memTrendChart.setOption({
+          title: {
+            text: '内存走势'
+          },
+          grid: {
+            left: '1%',
+            right: '1%',
+            bottom: '10%',
+            containLabel: true,
+          },
+          tooltip: {},
+          xAxis: {
+            data: this.memTrendChartData.xArray,
+            show:false
+          },
+          yAxis: {
+            axisLabel: {
+              formatter: '{value}%'
+            },
+            min: 0,
+            max: 100
+          },
+          series: [{
+            symbol: "none",
             name: 'Mem',
             type: 'line',
             smooth: true,
-            data: this.memTrendArray
+            data: this.memTrendChartData.yArray,
+            color:'#91c7ae',
+            areaStyle: {}
           }]
         });
       },
@@ -284,22 +334,41 @@
           return `${val}`;
         }
       },
-      updateChart(data) {
+      updateRssiChart(data) {
         let time = new Date();
         let timeStr = `${this.timeStrFormat(time.getMinutes())}:${this.timeStrFormat(time.getSeconds())}`;
-        this.memTrendXArray.push(timeStr);
-        if (this.memTrendXArray.length > 30)
-          this.memTrendXArray.shift();
-        this.memTrendArray.push(data);
-        if (this.memTrendArray.length > 30)
-          this.memTrendArray.shift();
-        window.memTrendchart.setOption({
+        this.rssiChartData.xArray.push(timeStr);
+        if (this.rssiChartData.xArray.length > MAX_HOME_CHART_SAMPLE)
+          this.rssiChartData.xArray.shift();
+        this.rssiChartData.yArray.push(data);
+        if (this.rssiChartData.yArray.length > MAX_HOME_CHART_SAMPLE)
+          this.rssiChartData.yArray.shift();
+        window.rssiChart.setOption({
           xAxis: {
-            data: this.memTrendXArray
+            data: this.rssiChartData.xArray
+          },
+          series: [{
+            name: 'Rssi',
+            data: this.rssiChartData.yArray
+          }]
+        });
+      },
+      updateMemTrendChart(data) {
+        let time = new Date();
+        let timeStr = `${this.timeStrFormat(time.getMinutes())}:${this.timeStrFormat(time.getSeconds())}`;
+        this.memTrendChartData.xArray.push(timeStr);
+        if (this.memTrendChartData.xArray.length > MAX_HOME_CHART_SAMPLE)
+          this.memTrendChartData.xArray.shift();
+        this.memTrendChartData.yArray.push(data);
+        if (this.memTrendChartData.yArray.length > MAX_HOME_CHART_SAMPLE)
+          this.memTrendChartData.yArray.shift();
+        window.memTrendChart.setOption({
+          xAxis: {
+            data: this.memTrendChartData.xArray
           },
           series: [{
             name: 'Mem',
-            data: this.memTrendArray
+            data: this.memTrendChartData.yArray
           }]
         });
       },
