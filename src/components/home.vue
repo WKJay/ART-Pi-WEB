@@ -150,7 +150,7 @@
         <div class="flex">
           <div>
             <a class="link" href="https://github.com/liuduanfei">刘端飞</a>
-            <a class="link" href="https://github.com/qgyhd1234">虞浩迪</a>
+            <a class="link" href="https://github.com/qgyhd1234">虞昊迪</a>
           </div>
           <p>完成网络音乐播放器综合 DEMO</p>
         </div>
