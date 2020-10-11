@@ -1,5 +1,6 @@
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 module.exports = {
+    //publicPath: "http://download.rt-thread.org/webnet/art-pi/factory/",
     configureWebpack: {
         devtool: 'source-map',
         plugins: [

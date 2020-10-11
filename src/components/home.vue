@@ -1,6 +1,5 @@
 <template>
   <div class="h7-container">
-
     <a-row :gutter="16">
       <a-col :md="6">
         <a-card class="h7-head-card" size="small" title="Board Control" :bordered="false">
@@ -149,7 +148,7 @@
         <p>自项目成立以来，多位社区爱好者加入了我们的内测，给我们提了很多宝贵的改进意见和建议，才有了最终的样子。</p>
         <p style="font-weight:bold">特别感谢：</p>
         <div class="flex">
-          <div >
+          <div>
             <a class="link" href="https://github.com/liuduanfei">刘端飞</a>
             <a class="link" href="https://github.com/qgyhd1234">虞浩迪</a>
           </div>
@@ -157,7 +156,7 @@
         </div>
 
         <div class="flex">
-          <a class="link" href="https://github.com/Supperthomas">李涛　</a>
+          <a class="link" href="https://github.com/Supperthomas">李涛</a>
           <p>适配蓝牙协议栈 BT_STACK</p>
         </div>
 
@@ -317,7 +316,7 @@
           tooltip: {},
           xAxis: {
             data: this.rssiChartData.xArray,
-            show:false
+            show: false
           },
           yAxis: {
             axisLabel: {
@@ -346,7 +345,7 @@
           tooltip: {},
           xAxis: {
             data: this.memTrendChartData.xArray,
-            show:false
+            show: false
           },
           yAxis: {
             axisLabel: {
@@ -361,7 +360,7 @@
             type: 'line',
             smooth: true,
             data: this.memTrendChartData.yArray,
-            color:'#91c7ae',
+            color: '#91c7ae',
             areaStyle: {}
           }]
         });
@@ -558,12 +557,13 @@
     font-size: 16px;
   }
 
-  .flex{
+  .flex {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
   }
-  .link{
+
+  .link {
     margin-right: 10px;
   }
 </style>
