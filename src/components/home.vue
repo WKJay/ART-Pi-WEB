@@ -141,26 +141,65 @@
           </a-descriptions-item>
         </a-descriptions>
       </a-card>
+    </a-row>
 
+    <a-row>
+      <a-card class="h7-head-card-mini" :bordered="false">
+        <a-descriptions title="致谢"></a-descriptions>
+        <p>自项目成立以来，多位社区爱好者加入了我们的内测，给我们提了很多宝贵的改进意见和建议，才有了最终的样子。</p>
+        <p style="font-weight:bold">特别感谢：</p>
+        <div class="flex">
+          <div >
+            <a class="link" href="https://github.com/liuduanfei">刘端飞</a>
+            <a class="link" href="https://github.com/qgyhd1234">虞浩迪</a>
+          </div>
+          <p>完成网络音乐播放器综合 DEMO</p>
+        </div>
+
+        <div class="flex">
+          <a class="link" href="https://github.com/Supperthomas">李涛　</a>
+          <p>适配蓝牙协议栈 BT_STACK</p>
+        </div>
+
+        <div class="flex">
+          <a class="link" href="https://github.com/loogg">马龙伟</a>
+          <p>完成工业网关综合 DEMO</p>
+        </div>
+
+        <div class="flex">
+          <a class="link" href="https://github.com/WKJay">王君杰</a>
+          <p>完成出厂例程</p>
+        </div>
+
+        <div class="flex">
+          <a class="link" href="https://github.com/forest-rain">黄景贤</a>
+          <p>设计 LoRa 扩展板</p>
+        </div>
+
+        <div class="flex">
+          <a class="link" href="https://gitee.com/Aladdin-Wang/">王李康</a>
+          <p>基于 ART-Pi 的 touchgfx 连载教程</p>
+        </div>
+
+        <p>对本项目做成的贡献。</p>
+      </a-card>
     </a-row>
 
     <a-row :gutter="16">
-      <a-col :md="8">
-        <a-button size="large" block href="https://www.rt-thread.org/">
-          RT-Thread 官方网站
+      <a-col :md="12">
+        <a-button size="large" block href="https://github.com/RT-Thread-Studio/sdk-bsp-stm32h750-realthread-artpi">
+          ART-Pi SDK
         </a-button>
       </a-col>
-      <a-col :md="8">
-        <a-button size="large" block href="https://www.rt-thread.org/document/site/">
-          RT-Thread 文档中心
-        </a-button>
-      </a-col>
-      <a-col :md="8">
+      <a-col :md="12">
         <a-button size="large" block href="https://club.rt-thread.org/">
           RT-Thread 开源社区
         </a-button>
       </a-col>
+
     </a-row>
+
+    <div style="height: 30px"></div>
   </div>
 </template>
 
@@ -191,7 +230,7 @@
           id7: "32768", //norflash used
           id8: "0", //sd total
           id9: "0", //sd used
-          id10: "0", //usb total 
+          id10: "0", //usb total
           id11: "0", //usb used
           id12: "v1.0.0", //firmware version
           id13: " ", //RESERVE
@@ -517,5 +556,14 @@
 
   .ant-tag {
     font-size: 16px;
+  }
+
+  .flex{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .link{
+    margin-right: 10px;
   }
 </style>
